@@ -11,6 +11,7 @@ def checkCipherName(x, y):
 
 # Check if user entered in enc or dec
 def checkEncDec(z):
+    z = z.upper()
     if (z != 'ENC' and z != 'DEC'):
         print('Your option ' + z + ' is invalid. Enter in either "ENC" to encrypt or "DEC" to decrypt!')
     else:
@@ -34,18 +35,17 @@ def readFile(g):
     f = open(g, "r")
     data = f.readlines()
     plaintext = []
+
     for line in data:
         words = line.split()
         plaintext.append(words)
 
-    print(plaintext)
     newPlaintext = ""
 
-    if (len(plaintext) > 1):
+    if (len(plaintext) >= 1):
         for i in range(len(plaintext)):
             p = ''.join(plaintext[i])
             newPlaintext = newPlaintext + p
-    #print(newPlaintext.upper())
     return newPlaintext.upper()
     
 
@@ -94,8 +94,7 @@ def playFairCipher(e, f, g, h):
 
     # creating new matrix
     matrix = keywordList + newAlphabet
-    print(matrix)
-    print(len(matrix))
+    print('Whole matrix: ' + str(matrix))
 
     row1 = matrix[0:5]
     row2 = matrix[5:10]
@@ -103,127 +102,160 @@ def playFairCipher(e, f, g, h):
     row4 = matrix[15:20]
     row5 = matrix[20:25]
     matrix2D = ([row1] + [row2] + [row3] + [row4] + [row5])
-    print(matrix2D)
+    print('5x5 matrix: ' + str(matrix2D))
     # [row][column]
-    print(matrix2D[1][0])
 
     pText = readFile(g)
-    print(pText)
-    playFairCipherEncrypt(e, pText, h)
+    print("Input File Contents: " + pText)
+    playFairCipherEncrypt(e, pText, h, matrix2D)
 
-def playFairCipherEncrypt(myKeyword, myPlaintext, outputFile):
-    print('\n' + myKeyword + '\n' + myPlaintext + '\n' + outputFile)
+def playFairCipherEncrypt(myKeyword, myPlaintext, outputFile, matrix2D):
     keywordPair = []
     i = 0
     j = 0
-    while i <= len(myKeyword):
-        if (len(myKeyword) == 1):
-            if (myKeyword[i] == 'X'):
-                keywordPair.insert(j, myKeyword[i] + 'Y')
-                print(keywordPair)
+    myPlaintext = myPlaintext + ' '
+    lengthOfKeyword = len(myPlaintext)
+    print('The length of my string (+1) is: %d' % lengthOfKeyword)
+
+    while i < lengthOfKeyword-1:
+        if (len(myPlaintext) == 2): # For string length of 1
+            if (myPlaintext[i] == 'X'):
+                keywordPair.insert(j, myPlaintext[i] + 'Y')
+            else:
+                keywordPair.insert(j, myPlaintext[i] + 'X')
+            i = i + 2
+        if (len(myPlaintext) == 3): # For string length of 2
+            if (myPlaintext[i] == myPlaintext[i+1]):
+                if (myPlaintext[i] == 'X'):
+                    keywordPair.insert(j, myPlaintext[i] + 'Y')
+                    keywordPair.insert(j, myPlaintext[i+1] + 'Y')
+                else:
+                    keywordPair.insert(j, myPlaintext[i] + 'X')
+                    keywordPair.insert(j, myPlaintext[i+1] + 'X')
+            else:
+                keywordPair.insert(j, myPlaintext[i] + myPlaintext[i+1])
+            i = i + 2
+        if (lengthOfKeyword >= 4 and lengthOfKeyword % 2 == 0 ): # For string length greater than 3 and also odd
+            if (myPlaintext[i] == myPlaintext[i+1]):
+                if (myPlaintext[i] == 'X'):
+                    keywordPair.insert(j, myPlaintext[i] + 'Y')
+                else:
+                    keywordPair.insert(j, myPlaintext[i] + 'X')
+                i = i + 1
+            elif (myPlaintext[i+1] == ' '):
+                if (myPlaintext[i] == 'X'):
+                    keywordPair.insert(j, myPlaintext[i] + 'Y')
+                else:
+                    keywordPair.insert(j, myPlaintext[i] + 'X')
                 i = i + 1
             else:
-                keywordPair.insert(j, myKeyword[i] + 'X')
-                print(keywordPair)
-                i = i + 1 
-        else:
-            if (myKeyword[i] == myKeyword[i+1]):
-                print('Duplicate')
-                if (myKeyword[i] == 'X'):
-                    keywordPair.insert(j, myKeyword[i] + 'Y')
-                    print(keywordPair)
-                    i = i + 1
-                    if (i == len(myKeyword)-1 and len(myKeyword)%2 == 0):
-                        print('break')
-                        keywordPair.insert(j, myKeyword[i] + 'X')
-                        print(keywordPair)
-                        break
-                    elif (i == len(myKeyword)-1):
-                        print('Double O')
-                        keywordPair.insert(j, myKeyword[i] + 'X')
-                        print(keywordPair)
-                        break
+                keywordPair.insert(j, myPlaintext[i] + myPlaintext[i+1])
+                i = i + 2
+        if (lengthOfKeyword >= 5 and lengthOfKeyword % 2 == 1): # For string length greater than 4 and also even
+            if (myPlaintext[i] == myPlaintext[i+1]):
+                if (myPlaintext[i] == 'X'):
+                    keywordPair.insert(j, myPlaintext[i] + 'Y')
                 else:
-                    keywordPair.insert(j, myKeyword[i] + 'X')
-                    print(keywordPair)
-                    i = i + 1
-                    if (i == len(myKeyword)-1 and len(myKeyword)%2 == 0):
-                        print('break')
-                        keywordPair.insert(j, myKeyword[i] + 'X')
-                        print(keywordPair)
-                        break
-                    elif (i == len(myKeyword)-1):
-                        print('Double O')
-                        keywordPair.insert(j, myKeyword[i] + 'X')
-                        print(keywordPair)
-                        break
-
+                    keywordPair.insert(j, myPlaintext[i] + 'X')
+                i = i + 1
+            elif (myPlaintext[i+1] == ' '):
+                if (myPlaintext[i] == 'X'):
+                    keywordPair.insert(j, myPlaintext[i] + 'Y')
+                else:
+                    keywordPair.insert(j, myPlaintext[i] + 'X')
+                i = i + 1
             else:
-                print('Yarghhh')
-                if (myKeyword[i+1] == ''):
-                    if (myKeyword[i] == 'X'):
-                        keywordPair.insert(j, myKeyword[i] + 'Y')
-                        print(keywordPair)
-                    else:
-                        keywordPair.insert(j, myKeyword[i] + 'X')
-                        print(keywordPair)
+                keywordPair.insert(j, myPlaintext[i] + myPlaintext[i+1])
+                i = i + 2
+                
+        j = j + 1
+        print('Keyword pairing(s): ', end="")
+        print(keywordPair)
+    keywordPair = "".join(keywordPair)
+    print(keywordPair)
+    print(matrix2D)
+    encryptionPLF(keywordPair, matrix2D)
+
+def encryptionPLF(keywordPair, matrix2D):
+    encryptedText = []
+
+    for i in range(len(keywordPair)):
+        for row in matrix2D:
+            print(row[0])
+            try:
+                coord1 = matrix2D.index(row)
+                coord2 = row.index(keywordPair[i])
+                print("the row number: %s" % matrix2D.index(row))
+                print("the column number: %s" % row.index(keywordPair[i]))
+                x = coord1
+                y = coord2
+                word = [x, y]
+                encryptedText.insert(i, word)
+            except:
+                print('r')
+    print(encryptedText)
+
+    encString = ''
+
+    j = 0
+    for i in range(int(len(encryptedText)/2)):
+        print(j)
+        index = encryptedText[j]
+        index2 = encryptedText[j+1]
+        x1 = index[0]
+        y1 = index[1]
+        x2 = index2[0]
+        y2 = index2[1]
+
+        if (x1 == x2):
+            x3 = x1
+            y3 = y1 + 1
+            x4 = x2
+            y4 = y2 + 1
+            if (y3 == 5):
+                y3 = 0
+            if (y4 == 5):
+                y4 = 0
+            print('(%d, %d), (%d,%d)' % (x3, y3, x4, y4))
+            char1 = matrix2D[x3][y3]
+            char2 = matrix2D[x4][y4]
+            encString = encString + char1 + char2
+        elif (y1 == y2):
+            print("col")
+        else:
+            if (y1 > y2):
+                x3 = x2
+                y3 = y1
+                x4 = x1
+                y4 = y2
+                if (x1 < x2):
+                    print('(%d, %d), (%d,%d)' % (x4, y4, x3, y3))
+                    char1 = matrix2D[x4][y4]
+                    char2 = matrix2D[x3][y3]
+                    encString = encString + char1 + char2
                 else:
-                    if (i == len(myKeyword)-3 and len(myKeyword)%2 == 1):
-                        keywordPair.insert(j, myKeyword[i] + myKeyword[i+1])
-                        print(keywordPair)
-                        i = i + 1
-                        print('I am here JKLDJSLF')
-                    elif (i == len(myKeyword)-2 and len(myKeyword)%2 == 1):
-                        print('I am here ODD 1')
-                        i = i + 1
-                        print(myKeyword[i])
-                        if (myKeyword[i-1] == myKeyword[i-2]):
-                            keywordPair.insert(j, myKeyword[i-1] + myKeyword[i])
-                        elif (myKeyword[i-1] != myKeyword[i]):
-                            keywordPair.insert(j, myKeyword[i-1] + myKeyword[i])
-                        elif (myKeyword[i-1] == myKeyword[i]):
-                            keywordPair.insert(j, myKeyword[i-1] + 'TA')
-                        else:
-                            if (myKeyword[i] == 'X'):
-                                keywordPair.insert(j, myKeyword[i] + 'Y')
-                            else:
-                                keywordPair.insert(j, myKeyword[i] + 'X')
-                        print(keywordPair)
-                        i = i + 1
-                    elif (i == len(myKeyword)-2 and len(myKeyword)%2 == 0):
-                        print('Even 2')
-                        if (myKeyword[i] == 'X'):
-                            keywordPair.insert(j, myKeyword[i] + myKeyword[i+1])
-                        else:
-                            keywordPair.insert(j, myKeyword[i] + myKeyword[i+1])
-                        print(keywordPair)
-                        print('I am here now')
-                        i = i + 2
-                    elif (i == len(myKeyword)-3 and len(myKeyword)%2 == 0):
-                        print('Even 1')
-                        keywordPair.insert(j, myKeyword[i] + myKeyword[i+1])
-                        print(keywordPair)
-                        i = i + 1
-                    else: 
-                        print('That else statement')
-                        keywordPair.insert(j, myKeyword[i] + myKeyword[i+1])
-                        print(keywordPair)
-                        i = i + 2
+                    print('(%d, %d), (%d,%d)' % (x3, y3, x4, y4))
+                    char1 = matrix2D[x3][y3]
+                    char2 = matrix2D[x4][y4]
+                    encString = encString + char1 + char2
+            else:
+                x3 = x1
+                y3 = y2
+                x4 = x2
+                y4 = y1
+                print('(%d, %d), (%d,%d)' % (x3, y3, x4, y4))
+                char1 = matrix2D[x3][y3]
+                char2 = matrix2D[x4][y4]
+                encString = encString + char1 + char2
+        j = j + 2
+    print('Your encrypted text: ' + encString)
+    fn = open('output.txt', 'w')
+    fn.write(encString)
+    fn.close()
 
 
 
         
-    
-            
-        j = j + 1
-        print(len(myKeyword))
-        print(i)
-        if (i == len(myKeyword)):
-            i = i + 1
-        print(i)
-
-
-
 
 def rowTranspositionCipher(e, f, g, h):
     print('hi')
