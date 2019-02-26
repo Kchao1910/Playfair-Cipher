@@ -1,6 +1,7 @@
-
 import sys
 import re
+
+# 
 
 # Check if cipher entered in is included in options
 def checkCipherName(x, y):
