@@ -1,3 +1,4 @@
+
 import sys
 import re
 
@@ -70,7 +71,7 @@ def playFairCipher(e, f, g, h):
 
     print('Keyword: ' + e)
 
-    if (f == 'ENC'):
+    if (f.upper() == 'ENC'):
         for i in range(len(e)):
             for j in range(len(alphabet)):
                 if (e[i] == alphabet[j]):
@@ -199,7 +200,6 @@ def encryptionPLF(keywordPair, matrix2D):
 
     j = 0
     for i in range(int(len(encryptedText)/2)):
-        print(j)
         index = encryptedText[j]
         index2 = encryptedText[j+1]
         x1 = index[0]
@@ -221,7 +221,18 @@ def encryptionPLF(keywordPair, matrix2D):
             char2 = matrix2D[x4][y4]
             encString = encString + char1 + char2
         elif (y1 == y2):
-            print("col")
+            x3 = x1 + 1
+            y3 = y1
+            x4 = x2 + 1
+            y4 = y2
+            if (x3 == 5):
+                x3 = 0 
+            if (x4 == 5):
+                x4 = 0
+            print('(%d, %d), (%d,%d)' % (x3, y3, x4, y4))
+            char1 = matrix2D[x3][y3]
+            char2 = matrix2D[x4][y4]
+            encString = encString + char1 + char2
         else:
             if (y1 > y2):
                 x3 = x2
@@ -235,8 +246,8 @@ def encryptionPLF(keywordPair, matrix2D):
                     encString = encString + char1 + char2
                 else:
                     print('(%d, %d), (%d,%d)' % (x3, y3, x4, y4))
-                    char1 = matrix2D[x3][y3]
-                    char2 = matrix2D[x4][y4]
+                    char1 = matrix2D[x4][y4]
+                    char2 = matrix2D[x3][y3]
                     encString = encString + char1 + char2
             else:
                 x3 = x1
