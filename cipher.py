@@ -177,6 +177,8 @@ def playFairCipherEncrypt(myKeyword, myPlaintext, outputFile, matrix2D):
     print(keywordPair)
     print(matrix2D)
     encryptionPLF(keywordPair, matrix2D)
+    decryptionPLF(outputFile, matrix2D)
+   
 
 def encryptionPLF(keywordPair, matrix2D):
     encryptedText = []
@@ -265,8 +267,122 @@ def encryptionPLF(keywordPair, matrix2D):
     fn.write(encString)
     fn.close()
 
+def decryptionPLF(outputFile, matrix2D):
+    dTxt = readFile(outputFile)
+    print(dTxt)
+    print(matrix2D)
+
+    dTxtLength = len(dTxt)
+    print(int(dTxtLength/2))
+    decryptedTxt = []
+
+    for i in range(len(dTxt)):
+        for row in matrix2D:
+            print(row[0])
+            try:
+                coord1 = matrix2D.index(row)
+                coord2 = row.index(dTxt[i])
+                print("the row number: %s" % matrix2D.index(row))
+                print("the column number: %s" % row.index(dTxt[i]))
+                x = coord1
+                y = coord2
+                word = [x, y]
+                decryptedTxt.insert(i, word)
+            except:
+                print('r')
+    print(decryptedTxt)
+
+    decTxt = ""
+    j = 0
+    for i in range(int(len(decryptedTxt)/2)):
+        print(i)
+        index1 = decryptedTxt[j]
+        index2 = decryptedTxt[j+1]
+        x1 = index1[0]
+        y1 = index1[1]
+        x2 = index2[0]
+        y2 = index2[1]
+        print(matrix2D[x1][y1] + matrix2D[x2][y2])
+
+        if (x1 == x2):
+            x3 = x1
+            y3 = y1 - 1
+            x4 = x2
+            y4 = y2 - 1
+            if (y3 == -1):
+                y3 == 4
+            if (y4 == -1):
+                y4 == 4
+            char1 = matrix2D[x3][y3]
+            char2 = matrix2D[x4][y4]
+            decTxt = decTxt + char1 + char2
+        elif (y1 == y2):
+            x3 = x1 - 1
+            y3 = y1
+            x4 = x2 - 1
+            y4 = y2
+            if (x3 == -1):
+                x3 = 4
+            if (x4 == -1):
+                x4 = 4
+            print("%d%d%d%d" % (x3,y3,x4,y4))
+            char1 = matrix2D[x3][y3]
+            char2 = matrix2D[x4][y4]
+            decTxt = decTxt + char1 + char2
+            print(decTxt)
+        else: 
+            x3 = x1
+            y3 = y2
+            x4 = x2
+            y4 = y1
+            char1 = matrix2D[x3][y3]
+            char2 = matrix2D[x4][y4]
+            decTxt = decTxt + char1 + char2
+              
+        j = j + 2
+    
+    oddIndex = []
+    m = 1
+    for k in range(int(len(decTxt)/2)):
+        oddLetter = decTxt[m]
+        oddIndex.append(oddLetter)
+        m = m + 2
+    print(oddIndex)
+    
+    x = 0
+    y = 0
+    newDecTxt = []
+    newDecTxt2 = []
+    for q in range(len(decTxt)):
+        newDecTxt2.append(decTxt[q])
+    
+    print(newDecTxt2)
 
 
+    for a in range(int(len(decTxt)/2)-1):
+        letter1 = decTxt[x]
+        letter2 = decTxt[x+1]
+        letter3 = decTxt[x+2]
+        print(letter1)
+        print(letter3)
+        if (letter1 == letter3):
+            if (letter2 == 'X' or letter2 == 'Y'):
+                print('Letter change')
+                letter2 = x+1
+                newDecTxt.append(letter2)
+        x = x + 2
+    print(newDecTxt)
+
+    for t in range(len(newDecTxt)):
+        newDecTxt2[newDecTxt[t]] = ""
+
+    print(newDecTxt2)
+    newDecTxt2 = "".join(newDecTxt2)
+    print(newDecTxt2)
+
+
+
+    
         
 
 def rowTranspositionCipher(e, f, g, h):
