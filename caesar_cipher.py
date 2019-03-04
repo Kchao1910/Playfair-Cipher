@@ -1,7 +1,7 @@
 #Caesar Cipher
 #Letters are incremented by a number (key) 
 
-def enc_cipher(message,key):
+def enc_caesar(message,key):
 
     #changes message into list of chars
     encrypted = []
@@ -33,7 +33,7 @@ def enc_cipher(message,key):
 
     return encrypted
 
-def dec_cipher(message,key):
+def dec_caesar(message,key):
     #Caesar Cipher
 
     decrypted = []
