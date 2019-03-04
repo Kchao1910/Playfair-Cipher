@@ -1,8 +1,9 @@
 #Caesar Cipher
-#Letters are incremented by a number (key)
+#Letters are incremented by a number (key) 
 
 def enc_cipher(message,key):
 
+    #changes message into list of chars
     encrypted = []
 
     for i in range(0, len(message)):
@@ -63,17 +64,5 @@ def dec_cipher(message,key):
     decrypted = ''.join(map(str,decrypted))
     
     return decrypted
-
-
-if __name__ == "__main__":
-    message = "hello"
-    key =  1
-
-    print("message",message,sep=' ')
-    enc_message = enc_cipher(message,key)
-    print(enc_message)
-
-    dec_message = dec_cipher(enc_message,key)
-    print(dec_message)
     
     
