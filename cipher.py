@@ -1,5 +1,6 @@
 import sys
 import re
+from collections import OrderedDict
 
 # 
 
@@ -89,7 +90,7 @@ def playFairCipher(e, f, g, h):
                         print('Already removed!')
                 break
         j = 0
-    
+    e = "".join(OrderedDict.fromkeys(e))
     keywordList = list(map(str, str(e)))
     print('New alphabet: ' + str(newAlphabet))
 
