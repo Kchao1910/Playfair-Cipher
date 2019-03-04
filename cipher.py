@@ -72,24 +72,23 @@ def playFairCipher(e, f, g, h):
 
     print('Keyword: ' + e)
 
-    if (f.upper() == 'ENC'):
-        for i in range(len(e)):
-            for j in range(len(alphabet)):
-                if (e[i] == alphabet[j]):
-                    if (e[i] == 'I' or e[i] == 'J'):
-                        print('Removing: ' + alphabet[j])
-                        try:
-                            newAlphabet.remove('IJ')
-                        except: 
-                            print('Already removed!')
-                    else:
-                        print('Removing: ' + alphabet[j])
-                        try:
-                            newAlphabet.remove(e[i])
-                        except:
-                            print('Already removed!')
-                    break
-            j = 0
+    for i in range(len(e)):
+        for j in range(len(alphabet)):
+            if (e[i] == alphabet[j]):
+                if (e[i] == 'I' or e[i] == 'J'):
+                    print('Removing: ' + alphabet[j])
+                    try:
+                        newAlphabet.remove('IJ')
+                    except: 
+                        print('Already removed!')
+                else:
+                    print('Removing: ' + alphabet[j])
+                    try:
+                        newAlphabet.remove(e[i])
+                    except:
+                        print('Already removed!')
+                break
+        j = 0
     
     keywordList = list(map(str, str(e)))
     print('New alphabet: ' + str(newAlphabet))
@@ -107,9 +106,12 @@ def playFairCipher(e, f, g, h):
     print('5x5 matrix: ' + str(matrix2D))
     # [row][column]
 
-    pText = readFile(g)
-    print("Input File Contents: " + pText)
-    playFairCipherEncrypt(e, pText, h, matrix2D)
+    if (f.upper() == 'ENC'):
+        pText = readFile(g)
+        print("Input File Contents: " + pText)
+        playFairCipherEncrypt(e, pText, h, matrix2D)
+    elif (f.upper() == 'DEC'):
+        decryptionPLF(h, matrix2D)
 
 def playFairCipherEncrypt(myKeyword, myPlaintext, outputFile, matrix2D):
     keywordPair = []
@@ -177,7 +179,6 @@ def playFairCipherEncrypt(myKeyword, myPlaintext, outputFile, matrix2D):
     print(keywordPair)
     print(matrix2D)
     encryptionPLF(keywordPair, matrix2D)
-    decryptionPLF(outputFile, matrix2D)
    
 
 def encryptionPLF(keywordPair, matrix2D):
@@ -185,24 +186,37 @@ def encryptionPLF(keywordPair, matrix2D):
 
     for i in range(len(keywordPair)):
         for row in matrix2D:
-            print(row[0])
+            print(keywordPair[i])
             try:
-                coord1 = matrix2D.index(row)
-                coord2 = row.index(keywordPair[i])
-                print("the row number: %s" % matrix2D.index(row))
-                print("the column number: %s" % row.index(keywordPair[i]))
-                x = coord1
-                y = coord2
-                word = [x, y]
-                encryptedText.insert(i, word)
+                if (keywordPair[i] == 'I' or keywordPair[i] == 'J'):
+                    print(keywordPair[i])
+                    coord1 = matrix2D.index(row)
+                    coord2 = row.index('IJ')
+                    print("the row number: %s" % matrix2D.index(row))
+                    print("the column number: %s" % row.index('IJ'))
+                    x = coord1
+                    y = coord2
+                    word = [x, y]
+                    encryptedText.insert(i, word)
+                else:
+                    print(keywordPair[i])
+                    coord1 = matrix2D.index(row)
+                    coord2 = row.index(keywordPair[i])
+                    print("the row number: %s" % matrix2D.index(row))
+                    print("the column number: %s" % row.index(keywordPair[i]))
+                    x = coord1
+                    y = coord2
+                    word = [x, y]
+                    encryptedText.insert(i, word)
             except:
-                print('r')
+                print('Not in this row')
     print(encryptedText)
 
     encString = ''
 
     j = 0
-    for i in range(int(len(encryptedText)/2)):
+    lengthOfEncryptedText = len(encryptedText)
+    for i in range(int(lengthOfEncryptedText/2)):
         index = encryptedText[j]
         index2 = encryptedText[j+1]
         x1 = index[0]
@@ -211,6 +225,7 @@ def encryptionPLF(keywordPair, matrix2D):
         y2 = index2[1]
 
         if (x1 == x2):
+            print("X1 == X2")
             x3 = x1
             y3 = y1 + 1
             x4 = x2
@@ -224,6 +239,7 @@ def encryptionPLF(keywordPair, matrix2D):
             char2 = matrix2D[x4][y4]
             encString = encString + char1 + char2
         elif (y1 == y2):
+            print("Y1 == Y2")
             x3 = x1 + 1
             y3 = y1
             x4 = x2 + 1
@@ -237,6 +253,8 @@ def encryptionPLF(keywordPair, matrix2D):
             char2 = matrix2D[x4][y4]
             encString = encString + char1 + char2
         else:
+            print("Y1 > Y2")
+            print("%d%d%d%d" % (x1,y1,x2,y2))
             if (y1 > y2):
                 x3 = x2
                 y3 = y1
@@ -253,6 +271,7 @@ def encryptionPLF(keywordPair, matrix2D):
                     char2 = matrix2D[x3][y3]
                     encString = encString + char1 + char2
             else:
+                print("Y1 > Y2 ELSE")
                 x3 = x1
                 y3 = y2
                 x4 = x2
