@@ -1,11 +1,8 @@
-import sys
-
+#Caesar Cipher
+#Letters are incremented by a number (key)
 
 def enc_cipher(message,key):
-    #Caesar Cipher
-    #Letters are incremented by codeWord A + C = 1 + 3 = D
 
-    #changes message into list of chars
     encrypted = []
 
     for i in range(0, len(message)):
