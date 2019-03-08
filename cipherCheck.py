@@ -1,6 +1,10 @@
 import sys
 import re
 import playfair_cipher
+import vigenere_cipher
+import caesar_cipher
+import railfence_cipher
+import rowTransposition_cipher
 
 # Check if cipher entered in is included in options
 def checkCipherName(x, y):
@@ -36,6 +40,7 @@ def checkFileExtension(a, b):
         print('Invalid output file extension: ' + b)
         sys.exit(0)
 
+# Reading files
 def readFile(g):
     f = open(g, "r")
     data = f.readlines()
@@ -52,7 +57,11 @@ def readFile(g):
             p = ''.join(plaintext[i])
             newPlaintext = newPlaintext + p
     return newPlaintext.upper()
-    
+
+def writeFile(h, text):
+    fn = open(h, 'w')
+    fn.write(text)
+    fn.close()
 
 # c = cipherName, d = cipherList, e = key, f = encDec, g = inputFile, h = outputFile
 def cipherInterface(c, d, e, f, g, h):
@@ -61,13 +70,13 @@ def cipherInterface(c, d, e, f, g, h):
         playfair_cipher.playFairCipher(e, f, g, h)
     elif (c == d[1]):
         print('Row Transpostion cipher chosen')
-        #row_transposition_cipher()
+        rowTransposition_cipher.rowTransposition_main(e, f, g, h)
     elif (c == d[2]):
         print('Railfence cipher chosen')
-        #railfence_cipher()
+        railfence_cipher.railfence_main(e, f, g, h)
     elif (c == d[3]):
-        print('Vigenre cipher chosen')
-        #vigenre_cipher()
+        print('Vigenere cipher chosen')
+        vigenere_cipher.vigenere_main(e, f, g, h)
     elif (c == d[4]):
         print('Caesar cipher chosen')
-        #caesar_cipher()
+        caesar_cipher.caesar_main(e, f, g, h)
