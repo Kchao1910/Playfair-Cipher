@@ -1,8 +1,11 @@
 #Caesar Cipher
 #Letters are incremented by a number (key) 
+import sys
+import cipherCheck
 
 def enc_caesar(message,key):
-
+    key = int(key)
+    
     #changes message into list of chars
     encrypted = []
 
@@ -31,9 +34,11 @@ def enc_caesar(message,key):
     #changes from list to string
     encrypted = ''.join(map(str,encrypted))
 
+    print(encrypted)
     return encrypted
 
 def dec_caesar(message,key):
+    key = int(key)
     #Caesar Cipher
 
     decrypted = []
@@ -62,7 +67,21 @@ def dec_caesar(message,key):
 
     #changes from list to string
     decrypted = ''.join(map(str,decrypted))
-    
+    print(decrypted)
     return decrypted
     
+    
+def caesar_main(key, encDec, inputFile, outputFile):
+    message = cipherCheck.readFile(inputFile)
+
+    if (encDec.upper() == 'ENC'):
+        encryptedText = enc_caesar(message, key)
+        cipherCheck.writeFile(outputFile, encryptedText)
+    elif (encDec.upper() == 'DEC'):
+        decryptedText = dec_caesar(message, key)
+        cipherCheck.writeFile(outputFile, decryptedText)
+    else:
+        sys.exit(0)
+
+
     
