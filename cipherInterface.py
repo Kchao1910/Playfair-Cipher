@@ -3,6 +3,7 @@ import re
 from collections import OrderedDict
 import cipherCheck
 import playfair_cipher
+import vigenere_cipher
 
 # start of main()
 cipherList = ['PLF', 'RTS', 'RFC', 'VIG', 'CES']
