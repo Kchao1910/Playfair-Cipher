@@ -1,3 +1,5 @@
+# CPSC 452 HW1 - Playfair Cipher
+# Authors: Jake Cliff, Kenny Chao, and Scott Ng
 import sys
 import re
 from collections import OrderedDict
@@ -26,6 +28,7 @@ def playFairCipher(e, f, g, h):
 
     print('Keyword: ' + e)
 
+    # Making sure that duplicates are not in alphabet
     for i in range(len(e)):
         for j in range(len(alphabet)):
             if (e[i] == alphabet[j]):
@@ -47,7 +50,7 @@ def playFairCipher(e, f, g, h):
     keywordList = list(map(str, str(e)))
     print('New alphabet: ' + str(newAlphabet))
 
-    # creating new matrix
+    # Creating new matrix
     matrix = keywordList + newAlphabet
     print('Whole matrix: ' + str(matrix))
 
@@ -118,12 +121,9 @@ def playFairCipherEncrypt(myKeyword, myPlaintext, outputFile, matrix2D):
                 keywordPair.insert(j, myPlaintext[i] + myPlaintext[i+1])
                 i = i + 2    
         j = j + 1
-        #print('Keyword pairing(s): ', end="")
         print(keywordPair)
 
     keywordPair = "".join(keywordPair)
-    #print(keywordPair)
-    #print(matrix2D)
     encryptionPLF(keywordPair, matrix2D, outputFile)
    
 
@@ -185,7 +185,6 @@ def encryptionPLF(keywordPair, matrix2D, outputFile):
                 y3 = 0
             if (y4 == 5):
                 y4 = 0
-            #print('(%d, %d), (%d,%d)' % (x3, y3, x4, y4))
             encString = findCoordinateValues(x3, y3, x4, y4, matrix2D, encString, False)
         elif (y1 == y2):
             x3 = x1 + 1
@@ -196,7 +195,6 @@ def encryptionPLF(keywordPair, matrix2D, outputFile):
                 x3 = 0 
             if (x4 == 5):
                 x4 = 0
-            #print('(%d, %d), (%d,%d)' % (x3, y3, x4, y4))
             encString = findCoordinateValues(x3, y3, x4, y4, matrix2D, encString, False)
         else:
             if (y1 > y2):
@@ -205,17 +203,14 @@ def encryptionPLF(keywordPair, matrix2D, outputFile):
                 x4 = x1
                 y4 = y2
                 if (x1 < x2):
-                    #print('(%d, %d), (%d,%d)' % (x4, y4, x3, y3))
                     encString = findCoordinateValues(x3, y3, x4, y4, matrix2D, encString, True)
                 else:
-                    #print('(%d, %d), (%d,%d)' % (x3, y3, x4, y4))
                     encString = findCoordinateValues(x3, y3, x4, y4, matrix2D, encString, True)
             else:
                 x3 = x1
                 y3 = y2
                 x4 = x2
                 y4 = y1
-                #print('(%d, %d), (%d,%d)' % (x3, y3, x4, y4))
                 encString = findCoordinateValues(x3, y3, x4, y4, matrix2D, encString, False)
         j = j + 2
     print('Your encrypted text: ' + encString)
@@ -245,8 +240,6 @@ def decryptionPLF(inputFile, outputFile, matrix2D):
             try:
                 coord1 = matrix2D.index(row)
                 coord2 = row.index(dTxt[i])
-                #print("the row number: %s" % matrix2D.index(row))
-                #print("the column number: %s" % row.index(dTxt[i]))
                 x = coord1
                 y = coord2
                 word = [x, y]
@@ -284,7 +277,6 @@ def decryptionPLF(inputFile, outputFile, matrix2D):
                 x3 = 4
             if (x4 == -1):
                 x4 = 4
-            #print("%d%d%d%d" % (x3,y3,x4,y4))
             decTxt = findDecryptionValues(x3, y3, x4, y4, decTxt, matrix2D) 
         else: 
             x3 = x1

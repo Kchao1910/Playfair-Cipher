@@ -1,4 +1,5 @@
-# Railfence Cipher
+# CPSC 452 HW1 - Railfence Cipher
+# Authors: Jake Cliff, Kenny Chao, and Scott Ng
 import sys
 import cipherCheck
 import math
@@ -6,22 +7,22 @@ import math
 def enc_railfence(message, key):
     key = int(key)
 
+    # Creating matrix
     railMatrix = []
     for i in range(key):
         railMatrix.append([])
 
     k = 0
 
+    # Placing plaintext into matrix
     for j in range(len(message)):
         if (k < key):
             railMatrix[k].append(message[j])
             k = k + 1
-            print(railMatrix)
         else:
             k = 0
             railMatrix[k].append(message[j])
             k = k + 1
-            print(railMatrix)
 
     print(railMatrix) 
 
@@ -37,7 +38,7 @@ def enc_railfence(message, key):
 
 def dec_railfence(message, key):
     key = int(key)
-    print(message)
+    print("Cipher Text: " + message)
     railMatrix = []
     for i in range(key):
         railMatrix.append([])
@@ -50,16 +51,13 @@ def dec_railfence(message, key):
     # This calculates how many elements per row before considering remainder
     i = 0
     for j in range(0, key):
-        print(i)
         elementNumberList.append(elementsPerRow)
-    print(elementNumberList)
     
     # This takes care of the remainder
     k = 0
     for l in range(0, additionalElements):
         elementNumberList[k] = int(elementNumberList[k]) + 1
         k = k + 1
-    print(elementNumberList)
     
     m = 0
     o = 0
@@ -67,7 +65,6 @@ def dec_railfence(message, key):
     # Put ciphertext into matrix
     for n in range(len(message)):
         if (m < int(elementNumberList[o])):
-            print(message[n])
             railMatrix[p].append(message[n])
             m = m + 1
         else:
@@ -82,7 +79,6 @@ def dec_railfence(message, key):
 
     if (columns != math.ceil(columns)):
         columns = math.floor(columns + 1)
-    print("Number of columns: " + str(columns))
 
     dTxt = ""
     c = 0
@@ -91,13 +87,11 @@ def dec_railfence(message, key):
         if (k < key):
             dTxt = dTxt + railMatrix[k][c]
             k = k + 1
-            print(dTxt)
         else:
             k = 0
             c = c + 1
             dTxt = dTxt + railMatrix[k][c]
             k = k + 1
-            print(dTxt)
 
     print("Decrypted Text: " + dTxt)
 

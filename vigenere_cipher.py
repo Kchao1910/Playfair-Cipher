@@ -1,3 +1,5 @@
+# CPSC 452 HW1 - Vigenere Cipher
+# Authors: Jake Cliff, Kenny Chao, and Scott Ng
 import sys
 import cipherCheck
 
@@ -29,6 +31,7 @@ def enc_vigenere(message,key):
 
     encrypted = ''.join(map(str,encrypted))
 
+    print("Encrypted Text: " + encrypted)
     return encrypted
 
 def dec_vigenere(message, key):
@@ -55,6 +58,7 @@ def dec_vigenere(message, key):
 
     decrypted = ''.join(map(str,decrypted))
 
+    print("Decrypted Text: " + decrypted)
     return decrypted
 
 

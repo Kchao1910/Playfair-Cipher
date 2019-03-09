@@ -1,5 +1,5 @@
-#Caesar Cipher
-#Letters are incremented by a number (key) 
+# CPSC 452 HW1 - Caesar Cipher
+# Authors: Jake Cliff, Kenny Chao, and Scott Ng
 import sys
 import cipherCheck
 
