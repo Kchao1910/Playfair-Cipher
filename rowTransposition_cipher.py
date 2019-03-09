@@ -39,22 +39,59 @@ def enc_rowTransposition(message, key):
             c = c + 1
             print(matrix)
     
-    encryptedText = ""
+    eTxt = ""
 
     for i in range(len(key)):
         columnIndex = int(key[i])-1
         for row in matrix:
-            encryptedText = encryptedText + row[columnIndex]
-            print(encryptedText)
+            eTxt = eTxt + row[columnIndex]
+            print(eTxt)
         i = i + 1
 
-    print("Encrypted Text: " + encryptedText)
+    print("Encrypted Text: " + eTxt)
 
-    return encryptedText
+    return eTxt
 
 def dec_rowTransposition(message, key):
-    print(message)
-    return message
+    rows = math.ceil(len(message)/len(key))
+    columns = len(key)
+
+    matrix = []
+    for i in range(rows):
+        matrix.append([])
+
+    r = 0
+    c = 0
+    for j in range(len(message)):
+        if (c < columns):
+            matrix[r].append("")
+            c = c + 1
+        else:
+            c = 0
+            r = r + 1
+            matrix[r].append("")
+            c = c + 1
+
+    j = 0
+    for i in range(len(key)):
+        columnIndex = int(key[i])-1
+        for row in matrix:
+            row[columnIndex] = message[j]
+            j = j + 1
+        i = i + 1
+    
+    print(matrix)
+    
+    dTxt = ""
+
+    for row in matrix:
+        decrypted = "".join(row)
+        dTxt = dTxt + decrypted
+
+    print("Decrypted Text: " + dTxt)
+
+    return dTxt
+    
 
 def rowTransposition_main(key, encDec, inputFile, outputFile):
     message = cipherCheck.readFile(inputFile)
